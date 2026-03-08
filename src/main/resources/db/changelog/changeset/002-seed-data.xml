@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <changeSet id="seed-data-1" author="ficus">
+        <insert tableName="boats">
+            <column name="boat_name" value="Sea Star"/>
+            <column name="capacity" valueNumeric="6"/>
+            <column name="price_per_hour" valueNumeric="2500.00"/>
+        </insert>
+        <insert tableName="boats">
+            <column name="boat_name" value="Black Pearl"/>
+            <column name="capacity" valueNumeric="12"/>
+            <column name="price_per_hour" valueNumeric="6000.00"/>
+        </insert>
+
+        <insert tableName="fishing_spots">
+            <column name="spot_name" value="Синяя Бездна"/>
+            <column name="depth_meters" valueNumeric="150"/>
+            <column name="bottom_type" value="Скалистое"/>
+        </insert>
+        <insert tableName="fishing_spots">
+            <column name="spot_name" value="Бухта Золотого Окуня"/>
+            <column name="depth_meters" valueNumeric="25"/>
+            <column name="bottom_type" value="Песчаное"/>
+        </insert>
+
+        <insert tableName="fish_types">
+            <column name="fish_name" value="Тунец"/>
+            <column name="difficulty_level" value="Высокий"/>
+        </insert>
+        <insert tableName="fish_types">
+            <column name="fish_name" value="Марлин"/>
+            <column name="difficulty_level" value="Легендарный"/>
+        </insert>
+        <insert tableName="fish_types">
+            <column name="fish_name" value="Морской окунь"/>
+            <column name="difficulty_level" value="Низкий"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="seed-data-fauna" author="ficus">
+        <insert tableName="spot_fauna">
+            <column name="spot_id" valueNumeric="1"/> <column name="fish_id" valueNumeric="1"/> <column name="seasonality" value="Лето-Осень"/>
+        </insert>
+        <insert tableName="spot_fauna">
+            <column name="spot_id" valueNumeric="1"/> <column name="fish_id" valueNumeric="2"/> <column name="seasonality" value="Круглый год"/>
+        </insert>
+        <insert tableName="spot_fauna">
+            <column name="spot_id" valueNumeric="2"/> <column name="fish_id" valueNumeric="3"/> <column name="seasonality" value="Весна-Лето"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

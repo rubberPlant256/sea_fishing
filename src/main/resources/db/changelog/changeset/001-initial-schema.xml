@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <changeSet id="1" author="ficus">
+        <createTable tableName="users">
+            <column name="user_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="email" type="varchar(100)"/>
+            <column name="password_hash" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role" type="varchar(20)"/>
+            <column name="surname" type="varchar(100)"/>
+            <column name="name" type="varchar(100)"/>
+            <column name="patronymic" type="varchar(100)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="ficus">
+        <createTable tableName="boats">
+            <column name="boat_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="boat_name" type="varchar(100)"/>
+            <column name="capacity" type="int"/>
+            <column name="price_per_hour" type="decimal(10,2)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="3" author="ficus">
+        <createTable tableName="fishing_spots">
+            <column name="spot_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="spot_name" type="varchar(100)"/>
+            <column name="depth_meters" type="int"/>
+            <column name="bottom_type" type="varchar(50)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="4" author="ficus">
+        <createTable tableName="fish_types">
+            <column name="fish_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="fish_name" type="varchar(50)"/>
+            <column name="difficulty_level" type="varchar(20)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="5" author="ficus">
+        <createTable tableName="spot_fauna">
+            <column name="spot_id" type="int">
+                <constraints nullable="false"
+                             primaryKey="true"
+                             primaryKeyName="pk_spot_fauna"
+                             foreignKeyName="fk_fauna_spot"
+                             referencedTableName="fishing_spots"
+                             referencedColumnNames="spot_id"/>
+            </column>
+            <column name="fish_id" type="int">
+                <constraints nullable="false"
+                             primaryKey="true"
+                             primaryKeyName="pk_spot_fauna"
+                             foreignKeyName="fk_fauna_fish"
+                             referencedTableName="fish_types"
+                             referencedColumnNames="fish_id"/>
+            </column>
+            <column name="seasonality" type="varchar(50)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="6" author="ficus">
+        <createTable tableName="bookings">
+            <column name="booking_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="int">
+                <constraints foreignKeyName="fk_booking_user" referencedTableName="users" referencedColumnNames="user_id"/>
+            </column>
+            <column name="boat_id" type="int">
+                <constraints foreignKeyName="fk_booking_boat" referencedTableName="boats" referencedColumnNames="boat_id"/>
+            </column>
+            <column name="spot_id" type="int">
+                <constraints foreignKeyName="fk_booking_spot" referencedTableName="fishing_spots" referencedColumnNames="spot_id"/>
+            </column>
+            <column name="booking_date" type="datetime"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
