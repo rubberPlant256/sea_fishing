@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавить рыбу | SeaFishing</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .section-title { border-left: 5px solid #0056b3; padding-left: 15px; margin-bottom: 20px; }
+        .form-shell { max-width: 860px; margin: 0 auto; }
+        .form-card { border: 0; border-radius: 18px; overflow: hidden; }
+        .form-card .card-header { background: linear-gradient(135deg, #0056b3, #0d6efd); color: white; }
+        .form-label { font-weight: 600; }
+        .form-text { color: #6c757d; }
+    </style>
+</head>
+<body class="bg-light">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/}">SeaFishing Pro</a>
+    </div>
+</nav>
+
+<div class="container pb-5">
+    <div class="form-shell">
+        <h2 class="section-title">Добавить новую рыбу</h2>
+
+        <div class="card shadow-sm form-card">
+            <div class="card-header py-4 px-4">
+                <h5 class="mb-1">Новая запись о рыбе</h5>
+                <p class="mb-0 small">Заполните параметры, чтобы рыба появилась в списках.</p>
+            </div>
+            <div class="card-body p-4 p-md-5">
+                <form th:action="@{/admin/fishes/save}" th:object="${fish}" method="post">
+                    <input type="hidden" th:field="*{fishId}"/>
+
+                    <div class="row g-4">
+                        <div class="col-12">
+                            <label class="form-label">Название рыбы</label>
+                            <input type="text"
+                                   class="form-control form-control-lg"
+                                   th:field="*{fishName}"
+                                   required
+                                   maxlength="50">
+                            <div class="text-danger mt-2"
+                                 th:if="${#fields.hasErrors('fishName')}"
+                                 th:errors="*{fishName}"></div>
+                            <div class="form-text">Например: треска, тунец, палтус.</div>
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label">Уровень сложности ловли</label>
+                            <input type="text"
+                                   class="form-control form-control-lg"
+                                   th:field="*{difficultyLevel}"
+                                   required
+                                   maxlength="20">
+                            <div class="text-danger mt-2"
+                                 th:if="${#fields.hasErrors('difficultyLevel')}"
+                                 th:errors="*{difficultyLevel}"></div>
+                            <div class="form-text">Только значения: низкий / средний / высокий.</div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-column flex-sm-row justify-content-end gap-2 mt-4">
+                        <a th:href="@{/admin/fishes}" class="btn btn-outline-secondary px-4">Отмена</a>
+                        <button type="submit" class="btn btn-primary px-4">Сохранить</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

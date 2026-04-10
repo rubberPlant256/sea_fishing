@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавить / Редактировать лодку | SeaFishing</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .section-title { border-left: 5px solid #0056b3; padding-left: 15px; margin-bottom: 20px; }
+        .form-shell { max-width: 860px; margin: 0 auto; }
+        .form-card { border: 0; border-radius: 18px; overflow: hidden; }
+        .form-card .card-header { background: linear-gradient(135deg, #0056b3, #0d6efd); color: white; }
+        .form-label { font-weight: 600; }
+        .form-text { color: #6c757d; }
+    </style>
+</head>
+<body class="bg-light">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/admin/boats}">SeaFishing Pro</a>
+    </div>
+</nav>
+
+<div class="container pb-5">
+    <div class="form-shell">
+        <h2 class="section-title" th:text="${boat.boatId != null} ? 'Редактировать лодку' : 'Добавить новую лодку'"></h2>
+
+        <div class="card shadow-sm form-card">
+            <div class="card-body p-4 p-md-5">
+                <form th:action="@{/admin/boats/save}" th:object="${boat}" method="post">
+                    <!-- boatId нужен для редактирования (если появится позже) -->
+                    <input type="hidden" th:field="*{boatId}"/>
+
+                    <div class="row g-4">
+                        <div class="col-12">
+                            <label class="form-label">Название лодки</label>
+                            <input type="text" class="form-control form-control-lg" th:field="*{boatName}" required>
+                            <div class="text-danger mt-2"
+                                 th:if="${#fields.hasErrors('boatName')}"
+                                 th:errors="*{boatName}"></div>
+                            <div class="form-text">Например: моторный катер для малой группы.</div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Вместимость</label>
+                            <input type="number" class="form-control form-control-lg" th:field="*{capacity}" min="1" required>
+                            <div class="text-danger mt-2"
+                                 th:if="${#fields.hasErrors('capacity')}"
+                                 th:errors="*{capacity}"></div>
+                            <div class="form-text">Укажите максимальное количество гостей.</div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Цена за час (₽)</label>
+                            <input type="number" step="0.01" class="form-control form-control-lg"
+                                   th:field="*{pricePerHour}" min="0" required>
+                            <div class="text-danger mt-2"
+                                 th:if="${#fields.hasErrors('pricePerHour')}"
+                                 th:errors="*{pricePerHour}"></div>
+                            <div class="form-text">Эта стоимость будет показана при выборе лодки.</div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-column flex-sm-row justify-content-end gap-2 mt-4">
+                        <a th:href="@{/admin/boats}" class="btn btn-outline-secondary px-4">Отмена</a>
+                        <button type="submit" class="btn btn-primary px-4">Сохранить</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

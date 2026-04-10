@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="3-insert-admin-user" author="irina">
+
+        <loadData
+                file="db/data/admin.csv"
+                tableName="users"
+                separator=","
+                encoding="UTF-8">
+
+            <column name="email" type="STRING"/>
+            <column name="password_hash" type="STRING"/>
+            <column name="role" type="STRING"/>
+            <column name="surname" type="STRING"/>
+            <column name="name" type="STRING"/>
+            <column name="patronymic" type="STRING"/>
+
+        </loadData>
+
+    </changeSet>
+</databaseChangeLog>

@@ -6,5 +6,7 @@ import ru.rsreu.sea_fishing.entities.User;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
+
     Optional<User> findByEmail(String email);
+
 }

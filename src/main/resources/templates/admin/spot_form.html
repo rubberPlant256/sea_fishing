@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавить место ловли | SeaFishing</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .section-title { border-left: 5px solid #0056b3; padding-left: 15px; margin-bottom: 20px; }
+        .form-shell { max-width: 980px; margin: 0 auto; }
+        .form-card { border: 0; border-radius: 18px; overflow: hidden; }
+        .form-card .card-header { background: linear-gradient(135deg, #0056b3, #0d6efd); color: white; }
+        .form-label { font-weight: 600; }
+        .fauna-item { background: #f8fbff; border: 1px solid #dbe7f6; border-radius: 16px; padding: 16px; }
+    </style>
+</head>
+<body class="bg-light">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/}">SeaFishing Pro</a>
+    </div>
+</nav>
+
+<div class="container pb-5">
+    <div class="form-shell">
+        <h2 class="section-title">Добавить место ловли</h2>
+
+        <div class="card shadow-sm form-card">
+            <div class="card-header py-4 px-4">
+                <h5 class="mb-1">Новое место и его фауна</h5>
+                <p class="mb-0 small">Сначала задайте параметры места ловли, затем добавьте одну или несколько строк с рыбой и сезонностью.</p>
+            </div>
+
+            <div class="card-body p-4 p-md-5">
+                <form th:action="@{/admin/spots/save}" th:object="${spotForm}" method="post" id="spotForm">
+
+                    <div class="row g-4 mb-4">
+                        <div class="col-12">
+                            <label class="form-label">Название места ловли</label>
+                            <input type="text"
+                                   class="form-control form-control-lg"
+                                   th:field="*{spotName}"
+                                   maxlength="100"
+                                   required>
+                            <div class="text-danger mt-2"
+                                 th:if="${#fields.hasErrors('spotName')}"
+                                 th:errors="*{spotName}"></div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Глубина (м)</label>
+                            <input type="number"
+                                   class="form-control form-control-lg"
+                                   th:field="*{depthMeters}"
+                                   min="0"
+                                   required>
+                            <div class="text-danger mt-2"
+                                 th:if="${#fields.hasErrors('depthMeters')}"
+                                 th:errors="*{depthMeters}"></div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Тип дна</label>
+                            <input type="text"
+                                   class="form-control form-control-lg"
+                                   th:field="*{bottomType}"
+                                   maxlength="50"
+                                   required>
+                            <div class="text-danger mt-2"
+                                 th:if="${#fields.hasErrors('bottomType')}"
+                                 th:errors="*{bottomType}"></div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="mb-0">Фауна места</h5>
+                        <button type="button" class="btn btn-outline-primary" id="addFaunaRow">Добавить строку</button>
+                    </div>
+
+                    <!-- Ошибка по самой коллекции fauna (например, пустая/невалидная) -->
+                    <div class="text-danger mb-3"
+                         th:if="${#fields.hasErrors('fauna')}"
+                         th:errors="*{fauna}"></div>
+
+                    <div id="faunaRows" class="d-flex flex-column gap-3">
+                        <div class="fauna-item" th:each="faunaRow, stat : *{fauna}">
+                            <div class="row g-3 align-items-end">
+
+                                <div class="col-md-5">
+                                    <label class="form-label">Рыба</label>
+                                    <select class="form-select"
+                                            th:field="*{fauna[__${stat.index}__].fishId}">
+                                        <option value="">Выберите рыбу</option>
+                                        <option th:each="fish : ${fishes}"
+                                                th:value="${fish.fishId}"
+                                                th:text="${fish.fishName}"></option>
+                                    </select>
+
+                                    <div class="text-danger mt-2"
+                                         th:if="${#fields.hasErrors('fauna[' + stat.index + '].fishId')}"
+                                         th:errors="*{fauna[__${stat.index}__].fishId}"></div>
+                                </div>
+
+                                <div class="col-md-5">
+                                    <label class="form-label">Сезонность</label>
+                                    <input type="text"
+                                           class="form-control"
+                                           th:field="*{fauna[__${stat.index}__].seasonality}"
+                                           maxlength="255"
+                                           placeholder="Например: круглый год">
+
+                                    <div class="text-danger mt-2"
+                                         th:if="${#fields.hasErrors('fauna[' + stat.index + '].seasonality')}"
+                                         th:errors="*{fauna[__${stat.index}__].seasonality}"></div>
+                                </div>
+
+                                <div class="col-md-2 d-grid">
+                                    <button type="button" class="btn btn-outline-danger remove-fauna-row">Удалить</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <template id="faunaRowTemplate">
+                        <div class="fauna-item">
+                            <div class="row g-3 align-items-end">
+                                <div class="col-md-5">
+                                    <label class="form-label">Рыба</label>
+                                    <select class="form-select fauna-fish">
+                                        <option value="">Выберите рыбу</option>
+                                        <option th:each="fish : ${fishes}" th:value="${fish.fishId}" th:text="${fish.fishName}"></option>
+                                    </select>
+                                </div>
+                                <div class="col-md-5">
+                                    <label class="form-label">Сезонность</label>
+                                    <input type="text"
+                                           class="form-control fauna-seasonality"
+                                           maxlength="255"
+                                           placeholder="Например: круглый год">
+                                </div>
+                                <div class="col-md-2 d-grid">
+                                    <button type="button" class="btn btn-outline-danger remove-fauna-row">Удалить</button>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+
+                    <div class="d-flex flex-column flex-sm-row justify-content-end gap-2 mt-4">
+                        <a th:href="@{/admin/spots}" class="btn btn-outline-secondary px-4">Отмена</a>
+                        <button type="submit" class="btn btn-primary px-4">Сохранить место</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    const faunaRows = document.getElementById('faunaRows');
+    const faunaTemplate = document.getElementById('faunaRowTemplate');
+    const addFaunaRowButton = document.getElementById('addFaunaRow');
+
+    function updateFaunaFieldNames() {
+        const rows = faunaRows.querySelectorAll('.fauna-item');
+        rows.forEach((row, index) => {
+            const fishSelect = row.querySelector('select');
+            const seasonalityInput = row.querySelector('input');
+            fishSelect.name = `fauna[${index}].fishId`;
+            seasonalityInput.name = `fauna[${index}].seasonality`;
+        });
+    }
+
+    function bindRemoveButtons() {
+        faunaRows.querySelectorAll('.remove-fauna-row').forEach(button => {
+            button.onclick = () => {
+                if (faunaRows.children.length === 1) {
+                    const fishSelect = faunaRows.querySelector('select');
+                    const seasonalityInput = faunaRows.querySelector('input');
+                    fishSelect.value = '';
+                    seasonalityInput.value = '';
+                    return;
+                }
+                button.closest('.fauna-item').remove();
+                updateFaunaFieldNames();
+                bindRemoveButtons();
+            };
+        });
+    }
+
+    addFaunaRowButton.addEventListener('click', () => {
+        const fragment = faunaTemplate.content.cloneNode(true);
+        faunaRows.appendChild(fragment);
+        updateFaunaFieldNames();
+        bindRemoveButtons();
+    });
+
+    updateFaunaFieldNames();
+    bindRemoveButtons();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

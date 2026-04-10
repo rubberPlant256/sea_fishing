@@ -2,6 +2,12 @@ package ru.rsreu.sea_fishing.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -20,4 +26,9 @@ public class FishingSpot {
 
     @Column(name = "bottom_type", length = 50)
     private String bottomType;
+
+    @OneToMany(mappedBy = "spot", cascade = CascadeType.ALL, orphanRemoval = true)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Set<SpotFauna> fauna = new HashSet<>();
 }

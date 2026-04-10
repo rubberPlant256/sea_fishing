@@ -1,0 +1,2 @@
+email,password_hash,role,surname,name,patronymic
+admin@gmail.com,$2a$12$gR90SBtwIMcz23y4kkJTW.9e.91vSK2FXiLs6vLQfHAwSuwbDf6fS,ADMIN,Adminov,Admin,Adminovich

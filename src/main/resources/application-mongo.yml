@@ -1,0 +1,20 @@
+app:
+  mongo:
+    host: localhost
+    port: 27017
+    database: sea_fishing
+    username: root
+    password: rootpassword
+    authSource: admin
+
+spring:
+  liquibase:
+    enabled: false
+  sql:
+    init:
+      mode: never
+  data:
+    jpa:
+      repositories:
+        enabled: false
+

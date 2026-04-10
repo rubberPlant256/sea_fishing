@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация | SeaFishing</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(to right, #eef6ff, #ffffff);
+        }
+        .register-card {
+            max-width: 500px;
+            margin: 80px auto;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            background-color: white;
+        }
+        .register-card h2 {
+            margin-bottom: 25px;
+            color: #0056b3;
+            font-weight: bold;
+            text-align: center;
+        }
+        .form-control {
+            margin-bottom: 15px;
+        }
+        .btn-register {
+            background-color: #0056b3;
+            color: white;
+            font-weight: bold;
+            width: 100%;
+        }
+        .btn-register:hover {
+            background-color: #003d80;
+        }
+        .login-link {
+            text-align: center;
+            margin-top: 15px;
+        }
+        .login-link a {
+            color: #0056b3;
+            text-decoration: none;
+        }
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/}">⚓ SeaFishing</a>
+        <div class="ms-auto">
+            <a th:href="@{/login}" class="btn btn-outline-light px-4">Войти</a>
+        </div>
+    </div>
+</nav>
+
+<div class="register-card">
+    <h2>Регистрация</h2>
+    <form th:action="@{/register}" method="post">
+        <input type="text" name="email" placeholder="Email" class="form-control" required/>
+        <input type="password" name="passwordHash" placeholder="Пароль" class="form-control" required/>
+        <input type="text" name="surname" placeholder="Фамилия" class="form-control"/>
+        <input type="text" name="name" placeholder="Имя" class="form-control"/>
+        <input type="text" name="patronymic" placeholder="Отчество" class="form-control"/>
+        <button type="submit" class="btn btn-register">Зарегистрироваться</button>
+    </form>
+    <div class="login-link">
+        Уже есть аккаунт? <a th:href="@{/login}">Войти</a>
+    </div>
+</div>
+
+</body>
+</html>

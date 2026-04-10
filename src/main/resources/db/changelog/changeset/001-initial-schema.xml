@@ -75,21 +75,51 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="6" author="ficus">
+    <changeSet id="6" author="irina">
+        <createTable tableName="excursions">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="boat_id" type="INT">
+                <constraints nullable="false" foreignKeyName="fk_excursion_boat" references="boats(boat_id)"/>
+            </column>
+
+            <column name="start_time" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="end_time" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="7" author="irina">
         <createTable tableName="bookings">
             <column name="booking_id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+
             <column name="user_id" type="int">
-                <constraints foreignKeyName="fk_booking_user" referencedTableName="users" referencedColumnNames="user_id"/>
+                <constraints foreignKeyName="fk_booking_user"
+                             referencedTableName="users"
+                             referencedColumnNames="user_id"/>
             </column>
-            <column name="boat_id" type="int">
-                <constraints foreignKeyName="fk_booking_boat" referencedTableName="boats" referencedColumnNames="boat_id"/>
+
+            <column name="excursion_id" type="BIGINT">
+                <constraints nullable="false"
+                             foreignKeyName="fk_booking_excursion"
+                             referencedTableName="excursions"
+                             referencedColumnNames="id"/>
             </column>
+
             <column name="spot_id" type="int">
-                <constraints foreignKeyName="fk_booking_spot" referencedTableName="fishing_spots" referencedColumnNames="spot_id"/>
+                <constraints foreignKeyName="fk_booking_spot"
+                             referencedTableName="fishing_spots"
+                             referencedColumnNames="spot_id"/>
             </column>
-            <column name="booking_date" type="datetime"/>
         </createTable>
     </changeSet>
+
 </databaseChangeLog>

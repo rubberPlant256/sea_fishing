@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="sidebar(activePage)" class="sidebar">
+
+    <h4 class="text-white text-center mb-4">⚓ Admin</h4>
+
+    <a th:href="@{/admin/bookings}"
+       th:classappend="${activePage == 'bookings'} ? 'active'">
+        Бронирования
+    </a>
+
+    <a th:href="@{/admin/excursions}"
+       th:classappend="${activePage == 'excursions'} ? 'active'">
+        Экскурсии
+    </a>
+
+    <a th:href="@{/admin/boats}"
+       th:classappend="${activePage == 'boats'} ? 'active'">
+        Лодки
+    </a>
+
+    <a th:href="@{/admin/spots}"
+       th:classappend="${activePage == 'spots'} ? 'active'">
+        Рыбные места
+    </a>
+
+    <a th:href="@{/admin/fishes}"
+       th:classappend="${activePage == 'fishes'} ? 'active'">
+        Типы рыб
+    </a>
+
+</div>
+
+</body>
+</html>
